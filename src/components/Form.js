@@ -4,7 +4,12 @@ import * as Yup from 'yup';
 import { PropTypes } from 'prop-types';
 
 const phoneRegExp = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
-//const urlRegExp = /^(?:http(s)?:\/\/)?[w.-]+(?:.[w.-]+)+[w-._~:/?#[]@!$&'()*+,;=.]+$/;
+// const urlRegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+const urlRegExp = /(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+// const urlRegExp = new RegExp(
+//   "^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$",
+//   'g'
+// );
 
 const FormSchema = Yup.object().shape({
   name: Yup.string()
@@ -18,9 +23,10 @@ const FormSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(8, 'Too Long!')
     .required('Required'),
-  url: Yup.string().url('Invalid format!'),
-  // .matches(urlRegExp, 'Invalid format!')
-  // .required('Required'),
+  url: Yup.string()
+    .url('Invalid format!')
+    // .matches(urlRegExp, 'Invalid format!')
+    .required('Required'),
   phone: Yup.string().matches(phoneRegExp, 'Invalid format!')
 });
 
