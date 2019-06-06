@@ -27,24 +27,29 @@ const FormSchema = Yup.object().shape({
     .url('Invalid format!')
     // .matches(urlRegExp, 'Invalid format!')
     .required('Required'),
-  phone: Yup.string().matches(phoneRegExp, 'Invalid format!')
+  phone: Yup.string().matches(phoneRegExp, 'Invalid format!'),
+  number: Yup.number()
+    .min(1, 'Minimum 1')
+    .max(99, 'Maximum 99')
+    .required('Required'),
+  color: Yup.mixed().notOneOf(['select'], 'Please select!')
 });
 
 class Form extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isEmailValid: false,
-      isNameValid: false,
-      isPhoneValid: false,
-      isUrlValid: false
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     isEmailValid: false,
+  //     isNameValid: false,
+  //     isPhoneValid: false,
+  //     isUrlValid: false
+  //   };
+  // }
 
   render() {
     return (
-      <div className="row">
-        <h1 className="text-center">Form Validation</h1>
+      <div className='row'>
+        <h1 className='text-center'>Form Validation</h1>
 
         <Formik
           initialValues={{
@@ -52,7 +57,9 @@ class Form extends Component {
             email: '',
             password: '',
             url: '',
-            phone: ''
+            phone: '',
+            number: 1,
+            color: 'select'
           }}
           validationSchema={FormSchema}
           // validate={values => {
@@ -70,34 +77,45 @@ class Form extends Component {
           //   return errors;
           // }}
           onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
+            // setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+            // }, 400);
           }}
         >
           {({ isSubmitting, validateForm, errors }) => (
             // <form>
             <Form2>
               <h3>Name:</h3>
-              <Field type="text" name="name" />
-              <ErrorMessage name="name" component="div" />
+              <Field type='text' name='name' />
+              <ErrorMessage name='name' component='div' />
               <h3>Email:</h3>
-              <Field type="email" name="email" />
-              <ErrorMessage name="email" component="div" />
+              <Field type='email' name='email' />
+              <ErrorMessage name='email' component='div' />
               <h3>Password:</h3>
-              <Field type="password" name="password" />
-              <ErrorMessage name="password" component="div" />
+              <Field type='password' name='password' />
+              <ErrorMessage name='password' component='div' />
               <h3>URL:</h3>
-              <Field type="text" name="url" />
-              <ErrorMessage name="url" component="div" />
+              <Field type='text' name='url' />
+              <ErrorMessage name='url' component='div' />
               <h3>Phone:</h3>
-              <Field type="text" name="phone" />
-              <ErrorMessage name="phone" component="div" />
-              <div className="small-6 small-centered text-center columns">
+              <Field type='text' name='phone' />
+              <ErrorMessage name='phone' component='div' />
+              <h3>Number:</h3>
+              <Field type='number' name='number' />
+              <ErrorMessage name='number' component='div' />
+              <h3>Color:</h3>
+              <Field component='select' name='color'>
+                <option value='select'>Selecione</option>
+                <option value='red'>Red</option>
+                <option value='green'>Green</option>
+                <option value='blue'>Blue</option>
+              </Field>
+              <ErrorMessage name='select' component='div' />
+              <div className='small-6 small-centered text-center columns'>
                 <a
-                  href="#"
-                  className="button success expand round text-center"
+                  href='#'
+                  className='button success expand round text-center'
                   disabled={isSubmitting}
                   onClick={() =>
                     validateForm().then(() => this.props.onValidate(errors))
@@ -106,9 +124,9 @@ class Form extends Component {
                   Verify
                 </a>
                 <button
-                  type="submit"
+                  type='submit'
                   disabled={isSubmitting}
-                  className="button success expand round text-center"
+                  className='button success expand round text-center'
                 >
                   Submit
                 </button>
