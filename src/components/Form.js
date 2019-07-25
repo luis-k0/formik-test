@@ -46,6 +46,18 @@ class Form extends Component {
   //   };
   // }
 
+  handleSubmitWithCode = (errors, handleSubmit) => {
+    // console.log('handleSubmitWithCode');
+    console.log('errors', errors);
+    if (JSON.stringify(errors) === '{}') {
+      console.log('no errors');
+      handleSubmit();
+    } else {
+      console.log('there are errors');
+      alert('Errors: ' + JSON.stringify(errors));
+    }
+  };
+
   render() {
     return (
       <div className='row'>
@@ -78,12 +90,12 @@ class Form extends Component {
           // }}
           onSubmit={(values, { setSubmitting }) => {
             // setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+            alert('onSubmit: ' + JSON.stringify(values, null, 2));
             setSubmitting(false);
             // }, 400);
           }}
         >
-          {({ isSubmitting, validateForm, errors }) => (
+          {({ isSubmitting, validateForm, errors, handleSubmit }) => (
             // <form>
             <Form2>
               <h3>Name:</h3>
@@ -130,18 +142,33 @@ class Form extends Component {
                 >
                   Submit
                 </button>
-              </div>
-              {/* <h3>Name:</h3>
-          <h3>Email:</h3>
-          <h3>Phone:</h3>
-          <h3>Blog URL:</h3>
 
-          <div className="small-6 small-centered text-center columns">
-            <a href="#" className="button success expand round text-center">
-              Verify
-            </a>
-          </div> */}
-              {/* </form> */}
+                <button
+                  type='button'
+                  disabled={isSubmitting}
+                  className='button success expand round text-center'
+                  onClick={
+                    () => {
+                      validateForm().then(() => {
+                        this.handleSubmitWithCode(errors, handleSubmit);
+                        // console.log('errors', errors);
+                        // if (JSON.stringify(errors) === '{}') {
+                        //   console.log('no errors');
+                        //   handleSubmit();
+                        // } else {
+                        //   console.log('there are errors');
+                        //   alert('Errors: ' + JSON.stringify(errors));
+                        // }
+                      });
+                    }
+                    // () => {handleSubmit();}
+                  }
+                >
+                  Submit with code
+                </button>
+              </div>
+              <h3>Errors:{JSON.stringify(errors)}</h3>
+              <h3>isSubmitting:{isSubmitting ? 'true' : 'false'}</h3>
             </Form2>
           )}
         </Formik>

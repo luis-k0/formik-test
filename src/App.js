@@ -10,9 +10,9 @@ class App extends Component {
   };
 
   handleValidate = msg => {
-    console.log(msg);
+    console.log('msg', msg);
     this.setState({ message: JSON.stringify(msg) });
-    console.log(this.state);
+    console.log('state', this.state);
   };
 
   render() {
